@@ -1,0 +1,123 @@
+<%- include('../headers/profile', { title: "Your Profile" }) %>
+
+
+<main class="max-w-5xl mx-auto px-4 py-10 font-sans bg-[#fcfbf7] text-slate-700">
+  <!-- Profile Header -->
+   
+  <div class="flex flex-col sm:flex-row items-center sm:items-start sm:justify-between gap-6 mb-10">
+    <div class="flex items-center gap-5">
+      <% const avatarUrl = session.profilePhoto && session.profilePhoto.trim() !== ''
+          ? session.profilePhoto
+          : `https://ui-avatars.com/api/?name=${encodeURIComponent(session.username)}&background=FCE8E6&color=444`; %>
+      <img src="<%= avatarUrl %>"
+           alt="Profile Image"
+           class="w-24 h-24 rounded-full object-cover border-4 border-rose-200 shadow-md" />
+      <div>
+        <h1 class="text-3xl font-serif text-rose-800 mb-1 tracking-tight">
+          Hello, <span class="font-bold"><%= session.username %></span> 🫧
+        </h1>
+        <p class="text-sm italic text-slate-500"><%= session.email %></p>
+      </div>
+    </div>
+    <a href="/profile/edit" class="text-sm text-rose-500 underline hover:text-rose-700 transition">
+      ✏️ Edit Profile Info
+    </a>
+
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="flex justify-end gap-4 mb-8">
+    <a href="/echo/create"
+       class="bg-rose-400 hover:bg-rose-500 text-white text-sm px-4 py-2 rounded-2xl shadow-sm transition-all duration-200">
+      ➕ New Echo
+    </a>
+    <a href="/nest/new"
+       class="bg-violet-400 hover:bg-violet-500 text-white text-sm px-4 py-2 rounded-2xl shadow-sm transition-all duration-200">
+      🪹 New Nest
+    </a>
+  </div>
+
+  <!-- Toggle Tabs -->
+  <div class="flex gap-6 mb-6 border-b border-slate-200 text-sm">
+    <button id="btn-echo" onclick="toggleTab('echo')"
+            class="text-rose-700 font-medium pb-2 border-b-2 border-rose-500 transition-all duration-200">
+      Your echo
+    </button>
+    <button id="btn-nests" onclick="toggleTab('nests')"
+            class="text-slate-500 hover:text-rose-600 pb-2 border-b-2 border-transparent transition-all duration-200">
+      Your Nests
+    </button>
+  </div>
+
+  <!-- echo Tab -->
+  <div id="tab-echo" class="tab-section">
+    <h2 class="text-xl font-serif text-rose-700 mb-4">echo you’ve set free 🌧️</h2>
+    <% if (echo && echo.length > 0) { %>
+      <div class="columns-1 sm:columns-2 md:columns-3 gap-5 space-y-5">
+        <% echo.forEach(echo => { %>
+          <div class="break-inside-avoid overflow-hidden bg-white rounded-2xl shadow hover:shadow-md transition">
+            <a href="/echo/<%= echo.slug %>">
+              <img src="<%= echo.imageUrl %>" alt="<%= echo.title %>" class="w-full object-cover rounded-t-2xl" />
+            </a>
+            <div class="p-4">
+              <h3 class="font-serif font-semibold text-rose-800 text-lg mb-1"><%= echo.title %></h3>
+              <p class="text-sm text-slate-600 line-clamp-2"><%= echo.description %></p>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <p class="text-slate-500 italic">You haven’t created any echo yet.</p>
+    <% } %>
+  </div>
+
+  <!-- Nests Tab -->
+  <div id="tab-nests" class="tab-section hidden">
+    <h2 class="text-xl font-serif text-violet-700 mb-4">Your cozy little Nests 🪶</h2>
+    <% if ( nests && nests.length > 0) { %>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+        <% nests.forEach(nest => { %>
+          <div class="bg-white border border-slate-200 rounded-2xl shadow-[0_2px_6px_rgba(0,0,0,0.05)] hover:shadow-md transition">
+            <a href="/nest/<%= nest.slug %>">
+              <div class="p-4">
+                <h3 class="text-lg font-serif text-slate-800 mb-1"><%= nest.title %></h3>
+                <p class="text-sm text-slate-600"><%= nest.description || "No description yet." %></p>
+              </div>
+            </a>
+            <% if (nest.createdBy === session.userId) { %>
+              <div class="flex justify-end gap-3 px-4 pb-4 text-sm">
+                <form action="/nest/<%= nest.slug %>/delete" method="POST" onsubmit="return confirm('Delete this Nest?')">
+                  <button type="submit" class="text-red-500 hover:underline">Delete</button>
+                </form>
+              </div>
+            <% } %>
+          </div>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <p class="text-slate-500 italic">You haven’t created any Nests yet.</p>
+    <% } %>
+  </div>
+</main>
+
+<script>
+  function toggleTab(tab) {
+    document.getElementById('tab-echo').classList.toggle('hidden', tab !== 'echo');
+    document.getElementById('tab-nests').classList.toggle('hidden', tab !== 'nests');
+
+    const echoBtn = document.getElementById('btn-echo');
+    const nestBtn = document.getElementById('btn-nests');
+
+    echoBtn.classList.remove('text-indigo-700', 'border-indigo-500');
+    echoBtn.classList.add('text-gray-500', 'border-transparent');
+
+    nestBtn.classList.remove('text-indigo-700', 'border-indigo-500');
+    nestBtn.classList.add('text-gray-500', 'border-transparent');
+
+    const activeBtn = tab === 'echo' ? echoBtn : nestBtn;
+    activeBtn.classList.remove('text-gray-500', 'border-transparent');
+    activeBtn.classList.add('text-indigo-700', 'border-indigo-500');
+  }
+</script>
+
+<%- include('../footers/footer') %>

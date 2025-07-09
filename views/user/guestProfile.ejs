@@ -1,0 +1,64 @@
+<%- include('../headers/echo', { title: "Your Profile" }) %>
+
+<main class="max-w-5xl mx-auto px-4 py-12">
+  <!-- Profile Header -->
+  <div class="flex items-center gap-6 mb-8">
+    <img
+      src="<%= profileUser.profilePhoto || `https://ui-avatars.com/api/?name=${profileUser.username.charAt(0)}&background=FCE8E6` %>"
+      alt="Profile"
+      class="w-24 h-24 rounded-full ring-4 ring-rose-300 object-cover"
+    />
+
+    <div>
+      <h1 class="text-3xl font-serif text-rose-900 font-bold mb-1">
+        <%= profileUser.username %>
+      </h1>
+
+      <% if (profileUser.bio) { %>
+        <p class="text-sm text-gray-600 italic"><%= profileUser.bio %></p>
+      <% } else { %>
+        <p class="text-sm text-gray-400 italic">No bio added yet.</p>
+      <% } %>
+
+      <p class="text-sm text-purple-700 mt-2 font-medium">
+        Echoes created: <%= echo.length %>
+      </p>
+    </div>
+  </div>
+
+  <!-- Echo Section -->
+  <h2 class="text-xl font-serif text-purple-800 mb-3">
+    Echoes by <%= profileUser.username %>
+  </h2>
+  <hr class="mb-6 border-rose-200" />
+
+  <% if (echo.length === 0) { %>
+    <p class="text-gray-500 italic">No Echoes yet.</p>
+  <% } else { %>
+    <div class="columns-1 sm:columns-2 md:columns-3 gap-5 space-y-5">
+      <% echo.forEach(e => { %>
+        <div
+          class="break-inside-avoid bg-white rounded-2xl shadow hover:shadow-md transition overflow-hidden border border-gray-100"
+        >
+          <a href="/echo/<%= e.slug %>">
+            <img
+              src="<%= e.imageUrl %>"
+              alt="<%= e.title %>"
+              class="w-full object-cover hover:brightness-95 transition rounded-t-2xl"
+            />
+          </a>
+          <div class="p-4">
+            <h3 class="font-serif font-semibold text-rose-800 text-lg mb-1">
+              <%= e.title %>
+            </h3>
+            <p class="text-sm text-slate-600 line-clamp-2">
+              <%= e.description || 'No description.' %>
+            </p>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</main>
+
+<%- include('../footers/footer') %>

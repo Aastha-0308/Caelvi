@@ -1,0 +1,60 @@
+<%- include("../headers/echo", { title: "The world of echo" }) %>
+<section class="max-w-6xl mx-auto px-1 py-8">
+  <h1 class="text-3xl font-serif text-rose-800 font-bold mb-6 tracking-tight">
+    All echo 🫧
+  </h1>
+
+  <!-- Floating Button -->
+  <div>
+    <a href="/echo/create" class="fixed bottom-8 right-7 z-50 text-3xl bg-rose-500 hover:bg-rose-400 text-white w-14 h-14 flex items-center justify-center rounded-full shadow-lg transition duration-300">
+      ➕
+    </a>
+  </div>
+
+  <% if (echo.length === 0) { %>
+    <p class="text-slate-500 italic">No echo created yet.</p>
+  <% } else { %>
+    <div class="columns-2 sm:columns-2 md:columns-3 lg:columns-4 gap-3 space-y-5">
+      <% echo.forEach(echo => { %>
+        <div class="break-inside-avoid overflow-hidden bg-white rounded-2xl shadow-[0_2px_6px_rgba(0,0,0,0.05)] hover:shadow-md transition">
+
+          <!-- Echo Card -->
+          <a href="<%= echo.url %>">
+            <img src="<%= echo.imageUrl %>" alt="Echo image"
+              class="w-full h-auto object-cover hover:brightness-90 transition rounded-t-2xl" />
+          </a>
+
+          <div class="p-3">
+            <h2 class="text-lg font-serif text-slate-800 mb-1 leading-snug">
+              <a href="<%= echo.url %>" class="hover:underline"><%= echo.title %></a>
+            </h2>
+
+            <p class="text-sm text-slate-600 mb-2 line-clamp-3">
+              <%= echo.description %>
+            </p>
+
+            <% if (nests && nests.length > 0) { %>
+              <details class="mt-3">
+                <summary class="cursor-pointer text-sm text-rose-500 hover:text-rose-600 font-medium">
+                  + Save to Nest
+                </summary>
+                <div class="mt-2 space-y-2">
+                  <% nests.forEach(nest => { %>
+                    <form action="/nest/<%= nest.slug %>/add/<%= echo.slug %>" method="POST">
+                      <button type="submit"
+                        class="text-xs bg-rose-100 hover:bg-rose-200 text-rose-700 px-3 py-1 rounded-full shadow-sm transition">
+                        <%= nest.title %>
+                      </button>
+                    </form>
+                  <% }) %>
+                </div>
+              </details>
+            <% } %>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</section>
+
+<%- include("../footers/footer") %>

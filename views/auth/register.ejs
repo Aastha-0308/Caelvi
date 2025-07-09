@@ -1,0 +1,73 @@
+<%- include('../headers/auth', { title: "Register" }) %>
+
+<section class="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-lg mt-16 border border-rose-100">
+  <h2 class="text-3xl font-serif text-rose-800 font-bold  mb-6 tracking-tight text-center">
+    Create your Caelvi space
+  </h2>
+
+  <form action="/register" method="POST" onsubmit='return checkSubmit(event)'  class="space-y-4">
+    <input 
+      type="text" 
+      name="username" 
+      placeholder="Your username" 
+      class="w-full border border-slate-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-rose-200 focus:outline-none placeholder:text-slate-400"
+    />
+    
+    <input 
+      type="email" 
+      name="email" 
+      placeholder="Your email" 
+      class="w-full border border-slate-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-rose-200 focus:outline-none placeholder:text-slate-400"
+    />
+
+    <input 
+      type="password" 
+      name="password" 
+      placeholder="Create a password" 
+      class="w-full border border-slate-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-rose-200 focus:outline-none placeholder:text-slate-400"
+    />
+    <span id="err" class="text-sm text-red-500 mt-1 block"></span>
+    <button 
+      type="submit" 
+      class="w-full bg-rose-500 hover:bg-rose-600 text-white py-2 rounded-full font-medium tracking-wide transition shadow-sm"
+    >
+      Create Account
+    </button>
+    
+  </form>
+  <p class="text-center text-sm text-slate-500 mt-6">
+    Already a part of Caelvi? <a href="/login" class="text-rose-500 hover:underline font-medium">Log in</a>
+  </p>
+  <script>
+    async function checkSubmit(event) {
+        const form = event.target;
+        const username = form.username.value.trim();
+        const email = form.email.value.trim();
+        const password = form.password.value;
+        const USERNAME_REGEX = /^[a-z][a-z0-9_]{0,19}$/i;
+        const EMAIL_REGEX = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+        const PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{6,}$/;
+        const err = document.getElementById('err');
+        if (!username || !email || !password){
+            err.textContent = "All fields are requried."
+            event.preventDefault();
+            return
+        }
+        if (!username.match(USERNAME_REGEX)){
+          err.textContent = "Username can only contain letters and numbers and underscroes"
+          event.preventDefault();
+          return 
+        }
+
+        if (!email.match(EMAIL_REGEX)){
+          err.textContent = 'Invalid email address'
+          event.preventDefault();
+          return 
+        }
+        
+    }
+
+  </script>
+</section>
+
+<%- include('../footers/auth') %>

@@ -1,0 +1,34 @@
+<%- include('../headers/auth', { title: "Verify" }) %>
+
+<section class="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-lg mt-16 border border-rose-100">
+  <h2 class="text-3xl font-serif text-rose-800 font-bold  mb-6 tracking-tight text-center">
+    Verify Your Email
+  </h2>
+  <!-- <p class="text-sm text-slate-600 mb-4 text-center">
+    Enter the 6 digit code
+  </p> -->
+
+  <form action="/verify" method="POST" class="space-y-4">
+    <input 
+      type="text" 
+      name="code" 
+      maxlength="6"
+      placeholder="Enter the 6 digit code" 
+      class="w-full border border-slate-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-rose-200 focus:outline-none placeholder:text-slate-400"
+    />
+    
+    <button 
+      type="submit" 
+      class="w-full bg-rose-500 hover:bg-rose-600 text-white py-2 rounded-full font-medium tracking-wide transition"
+    >
+      Verify & Create Account
+    </button>
+    
+  </form>
+  <p class="text-center text-sm text-slate-500 mt-6">
+    Already a part of Caelvi? <a href="/login" class="text-rose-500 hover:underline font-medium">Log in</a>
+  </p>
+</section>
+
+<%- include('../footers/auth') %>
+

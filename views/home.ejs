@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Caelvi – Your Cozy Digital Nest</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Newsreader:wght@500&family=Plus+Jakarta+Sans:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles/output.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+      }
+      h1,
+      h2,
+      .logo {
+        font-family: "Newsreader", serif;
+      }
+    </style>
+  </head>
+
+  <body class="bg-[#FFF7F6] text-gray-800 flex flex-col min-h-screen">
+    <!-- Header -->
+    <header
+      class="flex justify-between items-center px-6 py-4 bg-white shadow-sm"
+    >
+      <a href="/" class="text-3xl font-semibold text-rose-600 logo">Caelvi</a>
+      <div class="space-x-2">
+        <a
+          href="/login"
+          class="px-2 py-2 text-[#000] rounded-lg transition font-semibold"
+          >Log In</a
+        >
+        <a
+          href="/register"
+          class="px-4 py-2 bg-rose-500 text-white rounded-lg hover:bg-rose-600 shadow transition"
+          >Create Account</a
+        >
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main
+      class="flex flex-col items-center justify-center flex-1 text-center px-4 py-16"
+    >
+      <h1 class="text-4xl md:text-5xl text-rose-600 mb-4">Welcome to Caelvi</h1>
+      <p class="max-w-xl text-lg text-gray-600 mb-8">
+        Not everything has to be loud to be seen. Caelvi lets you express
+        gently, connect meaningfully, and keep your digital world beautifully
+        yours.
+      </p>
+      <a
+        href="/register"
+        class="px-6 py-3 bg-rose-500 text-white rounded-xl font-semibold shadow hover:bg-rose-600 transition"
+      >
+        Start Echoing
+      </a>
+    </main>
+
+    <!-- Footer -->
+    <footer
+      class="text-center text-sm text-gray-400 py-4 border-t border-gray-100"
+    >
+      © <%= new Date().getFullYear() %> Caelvi — Built with heart.
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,116 @@
+<%- include('../headers/echo', { title: "Edit Profile" }) %>
+
+<main class="max-w-xl mx-auto py-14 px-4">
+  <h1 class="text-3xl font-serif font-bold text-rose-800 mb-8 text-center">
+    🛠 Edit Your Caelvi Space
+  </h1>
+
+  <form
+    action="/profile/edit"
+    method="POST"
+    enctype="multipart/form-data"
+    class="max-w-md mx-auto p-6 bg-white shadow rounded space-y-6"
+  >
+    <h2 class="text-xl font-semibold text-gray-800">Edit Profile</h2>
+
+    <!-- Profile Picture Preview + Upload -->
+    <div class="flex flex-col items-center space-y-3">
+      <img
+        id="pfpPreview"
+        src="<%= user.profilePhoto %>"
+        alt="Profile Picture"
+        class="w-24 h-24 rounded-full object-cover border shadow"
+      />
+
+      <!-- Remove button dynamically shown/hidden via JS -->
+      <button
+        type="button"
+        id="removePfpBtn"
+        class="text-sm text-red-500 hover:underline hidden"
+      >
+        Remove Profile
+      </button>
+
+      <input
+        type="file"
+        name="profileImage"
+        id="pfpInput"
+        accept="image/*"
+        class="text-sm file:px-4 file:py-1 file:rounded-full file:border-0 file:bg-rose-500 file:text-white cursor-pointer"
+      />
+    </div>
+
+    <!-- Hidden input to flag removal -->
+    <input type="hidden" id="removeImage" name="removeImage" value="false" />
+
+    <!-- Username (read-only) -->
+    <input
+      type="text"
+      name="username"
+      value="<%= user.username %>"
+      readonly
+      class="w-full border border-gray-300 p-2 rounded bg-gray-100 text-gray-600 cursor-not-allowed"
+    />
+
+    <!-- Bio -->
+    <textarea
+      name="bio"
+      rows="3"
+      placeholder="Write a short bio..."
+      class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-1 focus:ring-rose-500"
+    ><%= user.bio || '' %></textarea>
+
+    <!-- Submit -->
+    <button
+      type="submit"
+      class="w-full bg-rose-500 hover:bg-rose-600 text-white py-2 rounded transition"
+    >
+      Save Changes
+    </button>
+  </form>
+
+  <script>
+    const input = document.getElementById("pfpInput");
+    const preview = document.getElementById("pfpPreview");
+    const removeBtn = document.getElementById("removePfpBtn");
+    const removeImageField = document.getElementById("removeImage");
+
+    const defaultCheck = url => url.includes('ui-avatars.com');
+
+    const checkRemoveButton = () => {
+      const src = preview.src;
+      if (defaultCheck(src)) {
+        removeBtn.classList.add("hidden");
+      } else {
+        removeBtn.classList.remove("hidden");
+      }
+    };
+
+    // Preview new image
+    input?.addEventListener("change", function () {
+      const file = this.files[0];
+      if (file) {
+        preview.src = URL.createObjectURL(file);
+        removeImageField.value = "false";
+        setTimeout(checkRemoveButton, 100); // ensure preview is updated before checking
+      }
+    });
+
+    // Remove image and reset to default avatar
+    removeBtn?.addEventListener("click", function () {
+      const username = document.querySelector('input[name="username"]').value;
+      const initial = username?.charAt(0)?.toUpperCase() || 'U';
+      const fallback = `https://eu.ui-avatars.com/api/?name=${encodeURIComponent(initial)}&background=ffe5e5&color=ff6666&length=1&format=svg`;
+
+      preview.src = fallback;
+      input.value = "";
+      removeImageField.value = "true";
+      checkRemoveButton();
+    });
+
+    // Initial visibility check
+    checkRemoveButton();
+  </script>
+</main>
+
+<%- include('../footers/footer') %>

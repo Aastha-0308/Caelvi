@@ -1,0 +1,66 @@
+<%- include('../headers/auth', { title: "Login" }) %>
+
+
+<section class="max-w-md mx-auto mt-20 bg-white p-8 rounded-2xl shadow-lg border border-rose-100">
+  <h1 class="text-3xl font-serif text-rose-800 font-bold mb-6 text-center tracking-tight">
+    Welcome back to Caelvi ✨
+  </h1>
+
+  <form action="/login" method="POST" onsubmit="checkSubmit(event)" class="space-y-5">
+
+    <!-- Username -->
+    <div>
+      <label for="username" class="block text-sm font-medium text-slate-600 mb-1">Username</label>
+      <input
+        type="text"
+        id="username"
+        name="username"
+        placeholder="e.g. aastha"
+        class="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm shadow-sm focus:ring-2 focus:ring-rose-200 focus:outline-none placeholder:text-slate-400"
+      />
+    </div>
+
+    <!-- Password -->
+    <div>
+      <label for="password" class="block text-sm font-medium text-slate-600 mb-1">Password</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="••••••••"
+        class="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm shadow-sm focus:ring-2 focus:ring-rose-200 focus:outline-none placeholder:text-slate-400"
+      />
+    </div>
+    <span id="err" class="text-sm text-red-500 mt-1 block"></span>
+    <!-- Submit Button -->
+    <button
+      type="submit"
+      class="w-full bg-rose-500 hover:bg-rose-600 text-white py-2 rounded-full font-medium tracking-wide transition shadow-sm"
+    >
+      Log In
+    </button>
+  </form>
+  <script>
+    async function checkSubmit(event) {
+        const form = event.target;
+        const username = form.username.value.trim();
+        const password = form.password.value;
+        const USERNAME_REGEX = /^[a-z][a-z0-9_]{0,19}$/i;
+        const err = document.getElementById('err');
+        if (!username || !password){
+            err.textContent = "All fields are requried.";
+            event.preventDefault();
+            return
+        }
+        if (!username.match(USERNAME_REGEX)){
+          err.textContent = "Username can only contain letters and numbers and underscroes"
+          event.preventDefault();
+          return 
+        }
+      }
+  </script>
+  <p class="mt-6 text-sm text-center text-slate-500">Not on Caelvi yet? <a href="/register" class="text-rose-500 hover:underline font-medium">Create your account</a></p>
+</section>
+
+
+<%- include('../footers/auth') %>

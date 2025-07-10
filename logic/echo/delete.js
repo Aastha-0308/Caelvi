@@ -20,8 +20,7 @@ async function handleDeleteEcho(req, res) {
       req.flash('message', 'You are not authorized to delete this Echo.');
       return res.redirect(echo.url);
     }
-// helloooooll
-// hellooooooo
+
 
     await deleteEchoById(echo._id);
     req.flash('message', 'Echo deleted.');

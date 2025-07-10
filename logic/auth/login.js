@@ -13,8 +13,9 @@ async function showLoginForm(req, res) {
  * POST /login
  */
 async function handleLogin(req, res) {
-  const { username, password } = req.body;
-  
+  let { username: rawUsername, password: rawPassword } = req.body;
+  const username = rawUsername.trim();
+  const password = rawPassword.trim();
   if (!username || !password) {
     req.flash('message', 'Both fields are required.');
     return res.redirect('/login');
@@ -22,7 +23,7 @@ async function handleLogin(req, res) {
 
   const USERNAME_REGEX = /^[a-z][a-z0-9_]{0,19}$/i;
   if (!username.match(USERNAME_REGEX)){
-    req.falsh('message', 'Invalid username format');
+    req.flash('message', 'Invalid username format');
     res.redirect('/login')
     return
   }

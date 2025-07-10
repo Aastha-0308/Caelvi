@@ -18,8 +18,12 @@ async function showRegistrationForm(req, res) {
  * POST /register
  */
 async function handleRegistration(req, res) {
-  const { username, email, password } = req.body;
+  const { username: rawUsername, email: rawEmail, password: rawPassword } = req.body;
 
+  const username = rawUsername.trim();
+  const email = rawEmail.trim();
+  const password = rawPassword.trim();
+  
   if (!username || !email || !password) {
     req.flash('message', 'All fields are required.');
     return res.redirect('/register');
@@ -27,7 +31,7 @@ async function handleRegistration(req, res) {
 
   const USERNAME_REGEX = /^[a-z][a-z0-9_]{0,19}$/i;
   if (!username.match(USERNAME_REGEX)){
-    req.falsh('message', 'Invalid username format');
+    req.flash('message', 'Invalid username format');
     res.redirect('register')
     return
   }
